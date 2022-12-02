@@ -4,7 +4,6 @@ import com.ashutosh.todocrud.entity.Todo;
 import com.ashutosh.todocrud.entity.Users;
 import com.ashutosh.todocrud.repository.ToDoRepository;
 import com.ashutosh.todocrud.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,21 +11,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ToDoCrudApplication implements CommandLineRunner {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ToDoRepository toDoRepository;
+    private final ToDoRepository toDoRepository;
+
+    public ToDoCrudApplication(UserRepository userRepository, ToDoRepository toDoRepository) {
+        this.userRepository = userRepository;
+        this.toDoRepository = toDoRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(ToDoCrudApplication.class, args);
     }
 
-//    @Bean
-//    public Docket productApi() {
-//        return new Docket(DocumentationType.SWAGGER_2).select()
-//                .apis(RequestHandlerSelectors.basePackage("com.ashutosh.todocrud")).build();
-//    }
 
     @Override
     public void run(String... args) throws Exception {
