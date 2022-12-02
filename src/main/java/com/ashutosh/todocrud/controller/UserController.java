@@ -1,8 +1,7 @@
 package com.ashutosh.todocrud.controller;
 
+import com.ashutosh.todocrud.entity.Todo;
 import com.ashutosh.todocrud.entity.Users;
-import com.ashutosh.todocrud.request.AddTodoRequest;
-import com.ashutosh.todocrud.request.AddUserRequest;
 import com.ashutosh.todocrud.services.TodoServices;
 import com.ashutosh.todocrud.services.UserServices;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +24,13 @@ public class UserController {
     }
 
     @PostMapping
-    public void addUser(@RequestBody AddUserRequest userRequest){
+    public void addUser(@RequestBody Users userRequest){
         userServices.addUser(userRequest);
     }
 
     @PostMapping("/{userId}/todos")
-    public void addTodo(@PathVariable Long userId, @RequestBody AddTodoRequest todoRequest){
-        todoServices.addTodo(userId,todoRequest);
+    public void addTodo(@PathVariable Long userId, @RequestBody Todo todo){
+        todoServices.addTodo(userId,todo);
     }
 
     @PostMapping("/todos/{todoId}")

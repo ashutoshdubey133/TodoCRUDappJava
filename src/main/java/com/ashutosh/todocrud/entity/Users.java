@@ -22,11 +22,15 @@ public class Users {
     public Users() {
     }
 
-    public Users(Long id, String username, String password, List<Todo> todoList) {
+    public Users(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Users(Long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.todoList = todoList;
     }
 
     public Long getId() {

@@ -15,10 +15,8 @@ public class Todo {
     public Todo() {
     }
 
-    public Todo(long id, String content, Boolean completed) {
-        this.id = id;
+    public Todo(String content) {
         this.content = content;
-        this.completed = completed;
     }
 
     public long getId() {
