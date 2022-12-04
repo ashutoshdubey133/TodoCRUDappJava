@@ -15,8 +15,8 @@ public class UserServices {
         this.userRepository = userRepository;
     }
 
-    public Users getUserById(Long userId){
-        return userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException());
+    public Users getUserById (Long userId){
+        return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
     }
 
     public void addUser(Users user){
@@ -24,6 +24,8 @@ public class UserServices {
     }
 
     public void deleteUser(Long userId){
+        if(!userRepository.existsById(userId))
+            throw new NoSuchElementException();
         userRepository.deleteById(userId);
     }
 

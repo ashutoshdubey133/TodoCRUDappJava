@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,20 +48,31 @@ class TodoServicesTest {
     }
 
     @Test
-    void getTodoById() {
+    void getTodoByIdSuccess() {
         when(toDoRepository.findById(1L)).thenReturn(Optional.ofNullable(todo));
         Assertions.assertEquals(todo,todoServices.getTodoById(1L));
     }
 
     @Test
-    void addTodo() {
+    void getTodoByIdFailure() {
+        Assertions.assertThrows(NoSuchElementException.class,() -> todoServices.getTodoById(2L));
+    }
+
+    @Test
+    void addTodoSuccess() {
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
         todoServices.addTodo(1L,todo);
         verify(toDoRepository,times(1)).save(todo);
     }
 
     @Test
-    void toggleTodoCompleted() {
+    void addTodoFailure() {
+        when(userRepository.findById(1L)).thenThrow(new RuntimeException());
+        Assertions.assertThrows(RuntimeException.class,() -> todoServices.addTodo(2L,todo));
+    }
+
+    @Test
+    void toggleTodoCompletedSuccess() {
         when(toDoRepository.findById(1L)).thenReturn(Optional.ofNullable(todo));
         Boolean beforeToggle = todo.getCompleted();
         todoServices.toggleTodoCompleted(1L);
@@ -69,7 +81,12 @@ class TodoServicesTest {
     }
 
     @Test
-    void deleteTodo() {
+    void toggleTodoCompletedFailure() {
+        Assertions.assertThrows(NoSuchElementException.class,() -> todoServices.toggleTodoCompleted(2L));
+    }
+
+    @Test
+    void deleteTodoSuccess() {
         user.getTodoList().add(todo);
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
         when(toDoRepository.findById(1L)).thenReturn(Optional.ofNullable(todo));
@@ -77,5 +94,10 @@ class TodoServicesTest {
         verify(userRepository,times(1)).save(user);
         verify(toDoRepository,times(1)).delete(todo);
         Assertions.assertFalse(user.getTodoList().contains(todo));
+    }
+
+    @Test
+    void deleteTodoFailure() {
+        Assertions.assertThrows(NoSuchElementException.class,()-> todoServices.deleteTodo(2L,2L));
     }
 }
