@@ -19,8 +19,8 @@ public class UserServices {
         return userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException());
     }
 
-    public Users addUser(Users user){
-        return userRepository.save(user);
+    public void addUser(Users user){
+         userRepository.save(user);
     }
 
     public void deleteUser(Long userId){

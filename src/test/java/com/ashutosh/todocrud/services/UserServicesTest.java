@@ -25,7 +25,6 @@ class UserServicesTest {
     @BeforeEach
     void setUp() {
         user = new Users(1L,"ashutosh","password");
-//        userRepository.save(user);
         this.userServices = new UserServices(userRepository);
     }
 
@@ -37,13 +36,12 @@ class UserServicesTest {
 
     @Test
     void addUser() {
-        when(userRepository.save(user)).thenReturn(user);
-        Assertions.assertEquals(user,userServices.addUser(user));
+        userServices.addUser(user);
+        verify(userRepository,times(1)).save(user);
     }
 
     @Test
     void deleteUser() {
-        doNothing().when(userRepository).deleteById(1L);
         userServices.deleteUser(1L);
         verify(userRepository,times(1)).deleteById(1L);
     }

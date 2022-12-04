@@ -27,7 +27,6 @@ class TodoServicesTest {
 
     @Mock
     private UserRepository userRepository;
-    @Mock
     private UserServices userServices;
     private TodoServices todoServices;
 
@@ -43,6 +42,7 @@ class TodoServicesTest {
         user.setId(1L);
         user.setUsername("ashutosh");
         user.setPassword("password");
+        this.userServices = new UserServices(userRepository);
         this.todoServices = new TodoServices(userServices,toDoRepository,userRepository);
     }
 
@@ -53,18 +53,29 @@ class TodoServicesTest {
     }
 
     @Test
-    @Disabled
     void addTodo() {
-        when(userServices.getUserById(1L)).thenReturn(user);
-        when(toDoRepository.save(todo)).thenReturn(todo);
-        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
+        todoServices.addTodo(1L,todo);
+        verify(toDoRepository,times(1)).save(todo);
     }
 
     @Test
     void toggleTodoCompleted() {
+        when(toDoRepository.findById(1L)).thenReturn(Optional.ofNullable(todo));
+        Boolean beforeToggle = todo.getCompleted();
+        todoServices.toggleTodoCompleted(1L);
+        verify(toDoRepository,times(1)).save(todo);
+        Assertions.assertNotEquals(beforeToggle,todo.getCompleted());
     }
 
     @Test
     void deleteTodo() {
+        user.getTodoList().add(todo);
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
+        when(toDoRepository.findById(1L)).thenReturn(Optional.ofNullable(todo));
+        todoServices.deleteTodo(1L,1L);
+        verify(userRepository,times(1)).save(user);
+        verify(toDoRepository,times(1)).delete(todo);
+        Assertions.assertFalse(user.getTodoList().contains(todo));
     }
 }
