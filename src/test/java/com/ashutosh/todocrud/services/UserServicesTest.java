@@ -26,7 +26,8 @@ class UserServicesTest {
 
     @BeforeEach
     void setUp() {
-        user = new Users(1L,"ashutosh","password");
+        user = new Users("ashutosh","password");
+        user.setId(1L);
         this.userServices = new UserServices(userRepository);
     }
 
@@ -54,6 +55,7 @@ class UserServicesTest {
 
     @Test
     void deleteUserSuccess() {
+        when(userRepository.existsById(1L)).thenReturn(true);
         userServices.deleteUser(1L);
         verify(userRepository,times(1)).deleteById(1L);
     }
