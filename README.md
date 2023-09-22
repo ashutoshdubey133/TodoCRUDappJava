@@ -1,5 +1,5 @@
 # TodoCRUDappJava
-A basic CRUD app made using Spring Boot in Java REST API with h2 memory.
+A basic CRUD app made using Spring Boot in Java REST API with h2 memory
 
 API Endpoints.
 
